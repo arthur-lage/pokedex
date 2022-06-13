@@ -25,7 +25,7 @@ export default function App() {
         backgroundColor: "#fff",
       }}
     >
-      <StatusBar style="light" backgroundColor="transparent" translucent />
+      <StatusBar style="dark" backgroundColor="transparent" translucent />
 
       <Home />
     </View>

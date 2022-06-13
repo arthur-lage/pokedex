@@ -11,10 +11,10 @@ export const styles = StyleSheet.create({
   },
   options: {
     flexDirection: "row",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   option: {
-    marginRight: 25
+    marginRight: 25,
   },
   header: {
     marginTop: getStatusBarHeight() + 40,
@@ -51,8 +51,21 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     paddingRight: 25,
+    color: COLORS.text.black,
   },
   pokemonList: {
     flexDirection: "column",
+  },
+  loading: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  loadingText: {
+    color: COLORS.text.gray,
+    fontFamily: FONTS.text500,
+    fontSize: 16,
+    marginTop: 20
   },
 });

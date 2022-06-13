@@ -4,7 +4,6 @@ import { FONTS } from "../../theme/fonts";
 
 export const styles = StyleSheet.create({
   pokemonWrapper: {
-    backgroundColor: COLORS.background.green,
     width: "100%",
     marginBottom: 30,
     borderRadius: 10,
@@ -55,9 +54,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 5.5,
     paddingHorizontal: 5,
     flexDirection: "row",
-  },
-  typeIcon: {
-    marginRight: 5.56,
   },
   typeText: {
     fontFamily: FONTS.text400,
