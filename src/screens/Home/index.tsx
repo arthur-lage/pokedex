@@ -48,7 +48,7 @@ function Home() {
   const [pokemons, setPokemons] = useState<IPokemon[] | []>([]);
   const [hasFinishedFetchingPokemons, setHasFinishedFetchingPokemons] =
     useState<boolean>(false);
-  const numberOfPokemons = 151;
+  const numberOfPokemons = 986;
 
   const opacity = useState(new Animated.Value(0))[0];
 
