@@ -3,19 +3,43 @@ import { View } from "react-native";
 
 import { Home } from "./src/screens/Home";
 
-import AppLoading from "expo-app-loading";
-import { useFonts } from "expo-font";
+import * as Font from "expo-font";
+
+import React, { useCallback, useEffect, useState } from "react";
+
+import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
-    "SF-Pro-Display-Regular": require("./src/assets/fonts/sf-pro-display-regular.ttf"),
-    "SF-Pro-Display-Medium": require("./src/assets/fonts/sf-pro-display-medium.ttf"),
-    "SF-Pro-Display-Bold": require("./src/assets/fonts/sf-pro-display-bold.ttf"),
-  });
+  const [appIsReady, setAppIsReady] = useState<boolean>(false);
 
-  if (!fontsLoaded) {
-    // @ts-ignore
-    return <AppLoading />;
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+
+        await Font.loadAsync({
+          "SF-Pro-Display-Regular": require("./src/assets/fonts/sf-pro-display-regular.ttf"),
+          "SF-Pro-Display-Medium": require("./src/assets/fonts/sf-pro-display-medium.ttf"),
+          "SF-Pro-Display-Bold": require("./src/assets/fonts/sf-pro-display-bold.ttf"),
+        });
+      } catch (err: any) {
+        console.warn(err);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
 
   return (
@@ -24,6 +48,7 @@ export default function App() {
         flex: 1,
         backgroundColor: "#fff",
       }}
+      onLayout={onLayoutRootView}
     >
       <StatusBar style="dark" backgroundColor="transparent" translucent />
 

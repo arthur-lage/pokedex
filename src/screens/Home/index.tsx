@@ -17,7 +17,14 @@ import PokeballImage from "../../assets/images/icons/pokeball.png";
 import { PokemonCard } from "../../components/PokemonCard";
 
 import { FlatList } from "react-native-gesture-handler";
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { api } from "../../services/api";
 import { COLORS } from "../../theme/colors";
@@ -48,7 +55,10 @@ function Home() {
   const [pokemons, setPokemons] = useState<IPokemon[] | []>([]);
   const [hasFinishedFetchingPokemons, setHasFinishedFetchingPokemons] =
     useState<boolean>(false);
-  const numberOfPokemons = 986;
+
+  const [numberOfFetchedPokemons, setNumberOfFetchedPokemons] =
+    useState<number>(0);
+  const numberOfPokemons = 542;
 
   const opacity = useState(new Animated.Value(0))[0];
 
@@ -73,12 +83,16 @@ function Home() {
         return Promise.all(
           res.data.results.map((pokemon) => {
             return api.get(pokemon.url).then((res) => {
-              return {
+              const newPokemon = {
                 id: res.data.id,
                 name: res.data.name,
                 image: res.data.sprites.other["official-artwork"].front_default,
                 types: res.data.types,
               };
+
+              setNumberOfFetchedPokemons((prev) => prev + 1);
+
+              return newPokemon;
             });
           })
         ).then((res) => {
@@ -93,11 +107,7 @@ function Home() {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.options}>
-            <TouchableOpacity
-              onPress={() => console.log(pokemons)}
-              activeOpacity={0.5}
-              style={styles.option}
-            >
+            <TouchableOpacity activeOpacity={0.5} style={styles.option}>
               <GenerationIcon />
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.5} style={styles.option}>
@@ -160,7 +170,12 @@ function Home() {
               ]}
               source={PokeballImage}
             />
-            <Text style={styles.loadingText}>Loading...</Text>
+            <Text style={styles.loadingText}>
+              Loading pokémons -{" "}
+              {`${Number(
+                (numberOfFetchedPokemons / numberOfPokemons) * 100
+              ).toFixed(0)}%`}{" "}
+            </Text>
           </View>
         )}
       </View>
